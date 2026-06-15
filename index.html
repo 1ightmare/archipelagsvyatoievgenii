@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архипелаг Императрицы Евгении</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #1e3a8a;
+            --text-main: #334155;
+            --accent: #ff7a59;
+            --white: #ffffff;
+            --font: 'Montserrat', sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: var(--font);
+            color: var(--text-main);
+            background: linear-gradient(180deg, 
+                #ffffff 0%, 
+                #f0f6fc 12%, 
+                #d4e6f5 28%, 
+                #a4cbe6 50%, 
+                #5b8db8 75%, 
+                #1e3a8a 95%, 
+                #0f172a 100%
+            );
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            line-height: 1.7;
+            font-size: 18px;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        h1 { font-size: 3.8rem; letter-spacing: -1px; }
+        h2 { font-size: 2.5rem; text-align: center; }
+        h3 { font-size: 1.5rem; }
+        p { margin-bottom: 20px; }
+        a { text-decoration: none; color: inherit; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .section { padding: 120px 0; position: relative; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .bg-blob {
+            position: absolute;
+            filter: blur(90px);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .blob-1 { top: 10%; left: -10%; width: 500px; height: 500px; background: rgba(59, 130, 246, 0.4); }
+        .blob-2 { bottom: 0%; right: -5%; width: 600px; height: 600px; background: rgba(255, 122, 89, 0.3); }
+        .blob-3 { top: 20%; left: 30%; width: 400px; height: 400px; background: rgba(255, 255, 255, 0.6); }
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:hover { background-color: transparent; color: var(--accent); }
+        .btn-text {
+            background-color: transparent;
+            color: var(--accent);
+            border: none;
+            padding: 0;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        .btn-text::after {
+            content: ''; position: absolute;
+            width: 0%; height: 2px;
+            bottom: -4px; left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+        .btn-text:hover::after { width: 100%; }
+        .navbar-wrapper {
+            position: fixed; top: 20px; left: 0; width: 100%;
+            z-index: 1000; display: flex; justify-content: center;
+            padding: 0 20px; box-sizing: border-box;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 10px 40px;
+            width: 100%; max-width: 1100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+        }
+        .nav-links-left, .nav-links-right {
+            display: flex; gap: 30px; font-weight: 500; font-size: 15px; color: var(--text-dark);
+            align-items: center; flex: 1;
+        }
+        .nav-links-left { justify-content: flex-end; }
+        .nav-links-right { justify-content: flex-start; }
+        .nav-links-left a:hover, .nav-links-right a:hover { color: var(--accent); transition: 0.3s; }
+        .nav-logo { flex: 0 0 80px; display: flex; justify-content: center; margin: 0 20px; z-index: 1002; }
+        .nav-logo img, .footer-emblem img { height: 45px; width: auto; object-fit: contain; }
+        .nav-btn {
+            background: #f0f6fc; padding: 10px 25px; border-radius: 30px;
+            font-weight: 600; color: var(--text-dark); transition: 0.3s;
+        }
+        .nav-btn:hover { background: var(--text-dark); color: var(--white); }
+        .burger-menu {
+            display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1002;
+        }
+        .burger-menu span {
+            width: 30px; height: 3px; background-color: var(--text-dark);
+            border-radius: 3px; transition: all 0.3s ease;
+        }
+        .burger-menu.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .burger-menu.active span:nth-child(2) { opacity: 0; }
+        .burger-menu.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+        .mobile-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px);
+            z-index: 1001; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 30px;
+            opacity: 0; pointer-events: none; transition: all 0.4s ease;
+        }
+        .mobile-menu.active { opacity: 1; pointer-events: all; }
+        .mobile-link {
+            font-size: 1.5rem; font-weight: 600; color: var(--text-dark);
+        }
+        .hero {
+            position: relative; display: flex; min-height: 100vh; overflow: hidden;
+        }
+        .hero-content {
+            position: relative; 
+            flex: 0 0 55%; display: flex; flex-direction: column; justify-content: center;
+            padding-left: max(20px, calc((100vw - 1160px) / 2));
+            padding-right: 12%; box-sizing: border-box; z-index: 2; 
+        }
+        .hero-content p { font-size: 1.25rem; max-width: 600px; margin-bottom: 40px; }
+        .hero-image {
+            position: absolute; right: 0; top: 0;
+            width: 55%; height: 100%;
+            background-image: url('https://optim.tildacdn.pub/tild3264-3866-4262-b235-316530663465/-/resize/1000x/-/format/webp/DJI_0357_1.jpg.webp');
+            background-size: cover; background-position: center;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); 
+            z-index: 1; 
+        }
+        .animate-hero-1 { animation: fadeInUp 1s ease forwards; opacity: 0; }
+        .animate-hero-2 { animation: fadeInUp 1s ease forwards 0.2s; opacity: 0; }
+        .animate-hero-3 { animation: fadeInUp 1s ease forwards 0.4s; opacity: 0; }
+        .animate-hero-bg { animation: slideInRight 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+            to { opacity: 1; transform: translateX(0); clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); }
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .islands-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px; margin-top: 60px;
+        }
+        .island-card { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+        .island-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(30,58,138,0.15); }
+        .island-card img { width: 100%; height: 280px; object-fit: cover; }
+        .island-card-body { padding: 35px; }
+        .schedule-subtitle {
+            font-size: 1.4rem; font-weight: 500; color: var(--text-dark); margin-bottom: 50px;
+        }
+        .schedule-grid {
+            display: flex; flex-direction: column; gap: 20px;
+            max-width: 900px; margin: 0 auto; position: relative; z-index: 2;
+        }
+        .schedule-card {
+            display: flex; align-items: center; position: relative; padding: 35px 40px;
+        }
+        .schedule-card::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            height: 100%; width: 8px; background: var(--accent);
+        }
+        .schedule-date { flex: 1; font-size: 2.2rem; font-weight: 700; color: var(--text-dark); line-height: 1; }
+        .schedule-badge {
+            display: inline-block; background: rgba(255, 122, 89, 0.1); color: var(--accent);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 10px;
+        }
+        .schedule-details {
+            flex: 2; font-size: 1.1rem; border-left: 2px dashed rgba(30,58,138,0.2); padding-left: 35px;
+        }
+        .booking-layout {
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;
+        }
+        .booking-info h2 { text-align: left; }
+        .booking-info ul { list-style: none; padding: 0; margin-top: 30px; }
+        .booking-info li {
+            font-size: 1.1rem; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 15px; color: var(--text-dark); font-weight: 500;
+        }
+        .booking-info li span { font-size: 1.5rem; }
+        .form-container { padding: 50px; transition: box-shadow 0.4s ease; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .form-group { position: relative; margin-bottom: 10px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-input {
+            width: 100%; padding: 15px 0; font-size: 1.1rem; color: var(--text-dark);
+            background: transparent; border: none; border-bottom: 2px solid rgba(30,58,138,0.2);
+            outline: none; font-family: var(--font); transition: border-color 0.3s; box-sizing: border-box;
+        }
+        .form-input:focus { border-bottom-color: var(--accent); }
+        .form-label {
+            position: absolute; top: 15px; left: 0; font-size: 1.1rem; color: #64748b;
+            pointer-events: none; transition: all 0.3s ease;
+        }
+        .form-input:focus ~ .form-label, .form-input:valid ~ .form-label {
+            top: -10px; font-size: 0.85rem; color: var(--accent); font-weight: 600;
+        }
+        select.form-input { cursor: pointer; }
+        #submit-btn { width: 100%; margin-top: 10px; }
+        #form-success-message {
+            display: none; text-align: center; color: #10b981;
+            font-weight: 600; font-size: 1.1rem; margin-top: 10px; grid-column: 1 / -1;
+        }
+        .chat-section { padding: 80px 0; }
+        .chat-section h2, .chat-section p { color: var(--white); }
+        .chat-layout {
+            display: flex; align-items: center; gap: 60px;
+            max-width: 1000px; margin: 0 auto; position: relative; z-index: 2;
+        }
+        .chat-text { flex: 1; }
+        .chat-text h2 { text-align: left; font-size: 3rem; }
+        .chat-container {
+            flex: 1; display: flex; flex-direction: column;
+            height: 550px; min-width: 350px; padding: 0;
+            background: rgba(255, 255, 255, 0.85); 
+        }
+        .chat-header {
+            background: rgba(255,255,255,0.6); padding: 20px;
+            text-align: center; font-weight: 700; font-size: 1.2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-dark);
+        }
+        .online-dot {
+            display: inline-block;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+        .chat-messages {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .msg {
+            max-width: 85%; padding: 15px 20px; border-radius: 20px;
+            font-size: 0.95rem; line-height: 1.5; animation: fadeIn 0.3s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .msg.bot { background: rgba(255,255,255,0.9); color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 5px; }
+        .msg.user { background: var(--accent); color: var(--white); align-self: flex-end; border-bottom-right-radius: 5px; }
+        .chat-options {
+            padding: 20px; background: rgba(255,255,255,0.4);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end;
+        }
+        .chat-btn {
+            background: var(--white); border: 1px solid transparent; color: var(--text-dark);
+            padding: 10px 20px; border-radius: 50px; cursor: pointer;
+            font-weight: 600; font-size: 0.9rem; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .chat-btn:hover { background: var(--text-dark); color: var(--white); }
+        .floating-chat-btn {
+            position: fixed; bottom: 40px; right: 40px;
+            width: 70px; height: 70px;
+            background-color: var(--accent); color: var(--white);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 10px 25px rgba(255, 122, 89, 0.4);
+            cursor: pointer; z-index: 1000; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .floating-chat-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 35px rgba(255, 122, 89, 0.6); }
+        .footer {
+            background: transparent;
+            color: var(--white); padding: 60px 0 40px;
+            text-align: center; position: relative;
+        }
+        .footer h2 { color: var(--white); margin-bottom: 40px; }
+        .contact-large {
+            font-size: 1.3rem; font-weight: 500; color: var(--white);
+            margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .contact-large a { transition: color 0.3s; }
+        .contact-large a:hover { color: var(--accent); }
+        .footer-emblem {
+            width: 100px; height: 100px;
+            background-color: var(--white);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 60px auto 0;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+        }
+        .footer-emblem img {
+            width: 60%;
+            height: auto;
+            object-fit: contain;
+        }
+        .footer-bottom {
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem; color: rgba(255,255,255,0.6);
+        }
+        .fade-on-scroll { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 960px) {
+            .navbar { justify-content: center; padding: 10px 20px; }
+            .nav-links-left, .nav-links-right { display: none; } 
+            .nav-logo { margin: 0; flex: none; }
+            .burger-menu { position: absolute; right: 20px; display: flex; }
+            .hero { flex-direction: column; }
+            .hero-content { width: 100%; flex: none; padding: 120px 20px 60px; text-align: center; }
+            .hero-content p { margin: 0 auto 30px; }
+            .hero-image { position: relative; width: 100%; flex: none; height: 50vh; clip-path: none; animation: none; opacity: 1;}
+            .schedule-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .schedule-details { border-left: none; border-top: 2px dashed rgba(30,58,138,0.2); padding-left: 0; padding-top: 20px; width: 100%; }
+            .booking-layout { grid-template-columns: 1fr; gap: 40px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-container { padding: 40px 20px; }
+            .chat-layout { flex-direction: column; padding: 0 20px; }
+            .chat-text h2 { text-align: center; }
+            .floating-chat-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
+            .contact-large { font-size: 1.1rem; flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about" class="mobile-link">О нас</a>
+        <a href="#islands" class="mobile-link">Достопримечательности</a>
+        <a href="#schedule" class="mobile-link">Расписание</a>
+        <a href="#booking" class="mobile-link">Бронь</a>
+        <a href="#contacts" class="mobile-link">Контакты</a>
+        <a href="#bot-section" class="mobile-link nav-btn" style="margin-top: 20px;">Гид-бот</a>
+    </div>
+
+    <div class="navbar-wrapper">
+        <nav class="navbar">
+            <div class="nav-links-left">
+                <a href="#about">О нас</a>
+                <a href="#islands">Достопримечательности</a>
+                <a href="#schedule">Расписание</a>
+            </div>
+            
+            <div class="nav-logo">
+                <img src="logo.png" alt="Логотип">
+            </div>
+
+            <div class="nav-links-right">
+                <a href="#booking">Бронь</a>
+                <a href="#contacts">Контакты</a>
+                <a href="#bot-section" class="nav-btn">Гид-бот</a>
+            </div>
+            
+            <div class="burger-menu" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="hero" id="about">
+        <div class="hero-content">
+            <h1 class="animate-hero-1">Архипелаг Императрицы Евгении</h1>
+            <p class="animate-hero-2">Эти воды помнят не только шум прибоя, но и пушечные залпы великих держав. Здесь переплелись судьбы русских первооткрывателей, английских шпионов и французских аристократов. Отправимся в плавание, где каждый поворот штурвала открывает новую главу истории.</p>
+            <div class="animate-hero-3">
+                <a href="#islands" class="btn-text">Узнать подробнее</a>
+            </div>
+        </div>
+        <div class="hero-image animate-hero-bg"></div>
+    </div>
+
+    <div class="section" id="islands">
+        <div class="container fade-on-scroll">
+            <h2>Объекты исследования,<br>скрытые за Русским островом</h2>
+            <div class="islands-grid">
+                <div class="island-card glass-card">
+                    <img src="https://optim.tildacdn.pub/tild6336-3636-4534-a138-643463333338/-/cover/432x432/center/center/-/format/webp/__.jpg.webp" alt="Остров Попова">
+                    <div class="island-card-body">
+                        <h3>Остров Попова</h3>
+                        <p>Тишина и спокойствие вдали от бесконечных магистралей и пробок, в окружении тёплых лагун с песчаными пляжами.</p>
+                    </div>
+                </div>
+                <div class="island-card glass-card">
+                    <img src="https://optim.tildacdn.pub/tild3036-3739-4464-b235-643564353165/-/cover/432x432/center/center/-/format/webp/noroot.png.webp" alt="Остров Рейнеке">
+                    <div class="island-card-body">
+                        <h3>Остров Рейнеке</h3>
+                        <p>Неприступный, охваченный яркими цветами, словно пламенем, хранящий в себе золу прошлого.</p>
+                    </div>
+                </div>
+                <div class="island-card glass-card">
+                    <img src="https://optim.tildacdn.pub/tild3231-3463-4865-b461-386363393437/-/cover/432x432/center/center/-/format/webp/___1.jpeg.webp" alt="Остров Шкота">
+                    <div class="island-card-body">
+                        <h3>Остров Шкота</h3>
+                        <p>Оббитые волнами скалы, словно Иорданская Петра, показывают всё величие природы на Краю Света.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="schedule">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+        
+        <div class="container fade-on-scroll">
+            <h2>Ближайшие экскурсии</h2>
+            <p class="text-center schedule-subtitle">Отправляемся в плавание! Актуальное расписание.</p>
+            
+            <div class="schedule-grid">
+                <div class="schedule-card glass-card">
+                    <div class="schedule-date">20 июня<span class="schedule-badge">Среда</span></div>
+                    <div class="schedule-details">
+                        <strong>09:00</strong> — Отправление от Мариинского театра<br>
+                        <strong>11:00</strong> — Добираемся до о. Шкота<br>
+                        <strong>12:30</strong> — Остановка у о. Попова<br>
+                        <strong>15:00</strong> — Появляемся на о. Рейнеке<br>
+                        <strong>18:00</strong> — Возвращаемся на о. Русский
+                    </div>
+                </div>
+                <div class="schedule-card glass-card">
+                    <div class="schedule-date">22 июня<span class="schedule-badge">Пятница</span></div>
+                    <div class="schedule-details">
+                        <strong>09:00</strong> — Отправление от Мариинского театра<br>
+                        <strong>11:00</strong> — Добираемся до о. Шкота<br>
+                        <strong>12:30</strong> — Остановка у о. Попова<br>
+                        <strong>15:00</strong> — Появляемся на о. Рейнеке<br>
+                        <strong>18:00</strong> — Возвращаемся на о. Русский
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="booking">
+        <div class="bg-blob blob-3"></div>
+        
+        <div class="container fade-on-scroll">
+            <div class="booking-layout">
+                <div class="booking-info">
+                    <h2>Свободное бронирование</h2>
+                    <p style="font-size: 1.15rem;">Выберите желаемый маршрут и формат поездки. Мы всё организуем, чтобы вы могли просто наслаждаться путешествием.</p>
+                    <ul>
+                        <li><span>🛥️</span> Индивидуальный подход к каждому</li>
+                        <li><span>🌊</span> Захватывающие виды Приморья</li>
+                        <li><span>🛡️</span> Полная безопасность в пути</li>
+                    </ul>
+                </div>
+                
+                <div class="form-container glass-card">
+                    <form id="premium-form">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <input type="text" class="form-input" required id="f-name">
+                                <label class="form-label">Ваше имя</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <input type="tel" class="form-input" required id="f-phone">
+                                <label class="form-label">Телефон</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <select class="form-input" required id="f-island">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="popov">Остров Попова</option>
+                                    <option value="reyneke">Остров Рейнеке</option>
+                                    <option value="shkota">Остров Шкота</option>
+                                    <option value="all">Полная экскурсия (Все острова)</option>
+                                </select>
+                                <label class="form-label">Желаемый маршрут</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <select class="form-input" required id="f-tour">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="ind">Индивидуальная экскурсия (20 000₽)</option>
+                                    <option value="grp">Групповая экскурсия (15 000₽)</option>
+                                </select>
+                                <label class="form-label">Формат поездки</label>
+                            </div>
+                            <div class="form-group full-width">
+                                <button type="submit" class="btn" id="submit-btn" style="width: 100%;">Отправить заявку</button>
+                            </div>
+                            <div id="form-success-message">
+                                Заявка успешно оформлена! Мы свяжемся с вами в ближайшее время для уточнения деталей.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section chat-section" id="bot-section">
+        <div class="container fade-on-scroll">
+            <div class="chat-layout">
+                <div class="chat-text">
+                    <h2>Подобрать<br>экскурсию</h2>
+                    <p>Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он расскажет о маршрутах, поможет определиться с форматом путешествия и автоматически заполнит форму бронирования для вас.</p>
+                </div>
+                
+                <div class="chat-container glass-card">
+                    <div class="chat-header">Гид-ассистент онлайн <span class="online-dot">🟢</span></div>
+                    <div class="chat-messages" id="chat-messages">
+                    </div>
+                    <div class="chat-options" id="chat-options">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer" id="contacts">
+        <div class="container footer-content fade-on-scroll">
+            <h2>Всё когда-то появлялось на карте впервые.</h2>
+            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 40px;">Свяжитесь с нами для организации вашего идеального путешествия.</p>
+            
+            <div class="contact-large">📞 8 (999) 420-67-67</div>
+            <div class="contact-large">✉️ empresseugene@mail.ru</div>
+            <div class="contact-large"><a href="https://t.me/lexalovesjazz" target="_blank">✈️ @lexalovesjazz</a></div>
+            
+            <div class="footer-emblem">
+                <img src="logo.png" alt="Эмблема компании">
+            </div>
+
+            <div class="footer-bottom">
+                &copy; 2026 Архипелаг Императрицы Евгении. Все права защищены.
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-chat-btn" id="floating-chat-btn" title="Помощь с выбором">
+        💬
+    </div>
+
+    <script>
+        const burger = document.getElementById('burger-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        document.getElementById('floating-chat-btn').addEventListener('click', () => {
+            document.getElementById('bot-section').scrollIntoView({ behavior: 'smooth' });
+            const chatContainer = document.querySelector('.chat-container');
+            chatContainer.style.transform = 'scale(1.02)';
+            setTimeout(() => { chatContainer.style.transform = 'scale(1)'; }, 200);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('.fade-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+            
+            initBot();
+        });
+
+        document.getElementById('premium-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const msgBox = document.getElementById('form-success-message');
+            const originalText = btn.innerText;
+            
+            btn.style.backgroundColor = '#10b981'; 
+            btn.style.borderColor = '#10b981';
+            btn.innerText = '✓ Отправлено';
+            
+            msgBox.style.display = 'block'; 
+            
+            this.reset();
+            
+            setTimeout(() => {
+                btn.style.backgroundColor = '';
+                btn.style.borderColor = '';
+                btn.innerText = originalText;
+                msgBox.style.display = 'none';
+            }, 6000);
+        });
+
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+
+        const destinations = {
+            popov: {
+                id: "popov",
+                title: "Остров Попова",
+                desc: "Идеально для тех, кто ищет уединение. Тишина вдали от мегаполиса, окруженная тёплыми лагунами с песчаными пляжами. Отличный вариант для спокойной прогулки."
+            },
+            reyneke: {
+                id: "reyneke",
+                title: "Остров Рейнеке",
+                desc: "Захватывающие виды! Неприступный, покрытый яркими цветами, словно пламенем. Остров хранит в себе золу прошлого и удивительные истории."
+            },
+            shkota: {
+                id: "shkota",
+                title: "Остров Шкота",
+                desc: "Для любителей суровой романтики. Оббитые волнами скалы, словно Иорданская Петра, покажут вам всё величие природы на Краю Света."
+            }
+        };
+
+        function addMsg(text, sender) {
+            const msg = document.createElement('div');
+            msg.className = `msg ${sender}`;
+            msg.innerHTML = text;
+            chatMessages.appendChild(msg);
+            setTimeout(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
+        }
+
+        function renderOptions(buttonsArray) {
+            chatOptions.innerHTML = "";
+            buttonsArray.forEach(btn => {
+                const button = document.createElement('button');
+                button.className = 'chat-btn';
+                button.innerText = btn.text;
+                button.onclick = () => {
+                    addMsg(btn.text, 'user');
+                    chatOptions.innerHTML = "";
+                    setTimeout(btn.action, 600); 
+                };
+                chatOptions.appendChild(button);
+            });
+        }
+
+        function initBot() {
+            chatMessages.innerHTML = "";
+            addMsg("Здравствуйте! Я ваш Гид-ассистент. С удовольствием расскажу о наших маршрутах и помогу спланировать идеальный день на архипелаге.", "bot");
+            renderOptions([
+                { text: "Посмотреть экскурсии", action: showExcursions },
+                { text: "Наши контакты", action: showContacts }
+            ]);
+        }
+
+        function showExcursions() {
+            addMsg("У нас есть три основных направления, каждое со своим уникальным характером. Какой остров вам интересен?", "bot");
+            renderOptions([
+                { text: "Остров Попова", action: () => showIslandDetails('popov') },
+                { text: "Остров Рейнеке", action: () => showIslandDetails('reyneke') },
+                { text: "Остров Шкота", action: () => showIslandDetails('shkota') }
+            ]);
+        }
+
+        function showIslandDetails(islandId) {
+            const island = destinations[islandId];
+            addMsg(`<b>${island.title}</b><br><br>${island.desc}<br><br>Базовая стоимость поездки начинается от 15 000₽. Какой формат экскурсии вы бы предпочли?`, "bot");
+            
+            renderOptions([
+                { text: "Индивидуальный (20 000₽)", action: () => confirmBooking(island.id, island.title, "ind", "Индивидуальная экскурсия") },
+                { text: "В мини-группе (15 000₽)", action: () => confirmBooking(island.id, island.title, "grp", "Групповая экскурсия") },
+                { text: "Смотреть другие острова", action: showExcursions }
+            ]);
+        }
+
+        function confirmBooking(islandId, islandName, formatId, formatName) {
+            addMsg(`Отличный выбор! Мы организуем для вас <b>${formatName.toLowerCase()}</b> на <b>${islandName}</b>.<br><br>Я сейчас перенесу вас к форме бронирования и <b>автоматически заполню</b> выбранный маршрут и тариф. Вам останется только указать контактные данные.`, "bot");
+            
+            renderOptions([
+                { text: "Отлично, к оформлению!", action: () => { 
+                    document.getElementById('f-island').value = islandId;
+                    document.getElementById('f-tour').value = formatId;
+                    document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+                    
+                    const formContainer = document.querySelector('.form-container');
+                    formContainer.style.boxShadow = '0 0 45px rgba(255, 122, 89, 0.5)';
+                    setTimeout(() => { 
+                        formContainer.style.boxShadow = '0 15px 35px rgba(0,0,0,0.05)'; 
+                    }, 2000);
+
+                    initBot(); 
+                }},
+                { text: "Выбрать другой тур", action: showExcursions }
+            ]);
+        }
+
+        function showContacts() {
+            addMsg("Связаться напрямую можно по телефону <b>8 (999) 420-67-67</b>, в Telegram <a href='https://t.me/lexalovesjazz' target='_blank'><b>@lexalovesjazz</b></a> или написать на почту <b>empresseugene@mail.ru</b>", "bot");
+            renderOptions([
+                { text: "Посмотреть экскурсии", action: showExcursions },
+                { text: "В начало", action: initBot }
+            ]);
+        }
+    </script>
+</body>
+</html>
