@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Архипелаг Императрицы Евгении</title>
+    
+    <link rel="preload" as="image" href="islandbanner.jpg">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --text-dark: #1e3a8a;
@@ -20,15 +24,7 @@
             margin: 0;
             font-family: var(--font);
             color: var(--text-main);
-            background: linear-gradient(180deg, 
-                #ffffff 0%, 
-                #f0f6fc 12%, 
-                #d4e6f5 28%, 
-                #a4cbe6 50%, 
-                #5b8db8 75%, 
-                #1e3a8a 95%, 
-                #0f172a 100%
-            );
+            background: linear-gradient(180deg, #ffffff 0%, #f0f6fc 12%, #d4e6f5 28%, #a4cbe6 50%, #5b8db8 75%, #1e3a8a 95%, #0f172a 100%);
             background-size: 100% 100%;
             background-repeat: no-repeat;
             line-height: 1.7;
@@ -62,6 +58,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.05);
             overflow: hidden;
+            will-change: transform;
         }
         .bg-blob {
             position: absolute;
@@ -70,6 +67,7 @@
             z-index: 0;
             opacity: 0.5;
             pointer-events: none;
+            will-change: transform, opacity;
         }
         .blob-1 { top: 10%; left: -10%; width: 500px; height: 500px; background: rgba(59, 130, 246, 0.4); }
         .blob-2 { bottom: 0%; right: -5%; width: 600px; height: 600px; background: rgba(255, 122, 89, 0.3); }
@@ -119,6 +117,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             border: 1px solid rgba(255, 255, 255, 0.4);
             position: relative;
+            will-change: transform;
         }
         .nav-links-left, .nav-links-right {
             display: flex; gap: 30px; font-weight: 500; font-size: 15px; color: var(--text-dark);
@@ -150,14 +149,11 @@
             z-index: 1001; display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 30px;
             opacity: 0; pointer-events: none; transition: all 0.4s ease;
+            will-change: opacity;
         }
         .mobile-menu.active { opacity: 1; pointer-events: all; }
-        .mobile-link {
-            font-size: 1.5rem; font-weight: 600; color: var(--text-dark);
-        }
-        .hero {
-            position: relative; display: flex; min-height: 100vh; overflow: hidden;
-        }
+        .mobile-link { font-size: 1.5rem; font-weight: 600; color: var(--text-dark); }
+        .hero { position: relative; display: flex; min-height: 100vh; overflow: hidden; }
         .hero-content {
             position: relative; 
             flex: 0 0 55%; display: flex; flex-direction: column; justify-content: center;
@@ -168,7 +164,7 @@
         .hero-image {
             position: absolute; right: 0; top: 0;
             width: 55%; height: 100%;
-            background-image: url('https://optim.tildacdn.pub/tild3264-3866-4262-b235-316530663465/-/resize/1000x/-/format/webp/DJI_0357_1.jpg.webp');
+            background-image: url('islandbanner.jpg');
             background-size: cover; background-position: center;
             clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); 
             z-index: 1; 
@@ -190,31 +186,28 @@
         .island-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(30,58,138,0.15); }
         .island-card img { width: 100%; height: 280px; object-fit: cover; }
         .island-card-body { padding: 35px; }
-        .schedule-subtitle {
-            font-size: 1.4rem; font-weight: 500; color: var(--text-dark); margin-bottom: 50px;
-        }
+        .schedule-subtitle { font-size: 1.4rem; font-weight: 500; color: var(--text-dark); margin-bottom: 50px; }
         .schedule-grid {
             display: flex; flex-direction: column; gap: 20px;
             max-width: 900px; margin: 0 auto; position: relative; z-index: 2;
         }
-        .schedule-card {
-            display: flex; align-items: center; position: relative; padding: 35px 40px;
-        }
+        .schedule-card { display: flex; align-items: center; position: relative; padding: 35px 40px; }
         .schedule-card::before {
             content: ''; position: absolute; left: 0; top: 0;
             height: 100%; width: 8px; background: var(--accent);
         }
-        .schedule-date { flex: 1; font-size: 2.2rem; font-weight: 700; color: var(--text-dark); line-height: 1; }
+        .schedule-date {
+            flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+            font-size: 2.2rem; font-weight: 700; color: var(--text-dark); line-height: 1;
+        }
         .schedule-badge {
             display: inline-block; background: rgba(255, 122, 89, 0.1); color: var(--accent);
-            padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-top: 10px;
+            padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;
         }
         .schedule-details {
             flex: 2; font-size: 1.1rem; border-left: 2px dashed rgba(30,58,138,0.2); padding-left: 35px;
         }
-        .booking-layout {
-            display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;
-        }
+        .booking-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; }
         .booking-info h2 { text-align: left; }
         .booking-info ul { list-style: none; padding: 0; margin-top: 30px; }
         .booking-info li {
@@ -303,6 +296,30 @@
             cursor: pointer; z-index: 1000; transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .floating-chat-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 35px rgba(255, 122, 89, 0.6); }
+        .floating-lang-btn {
+            position: fixed; top: 40px; right: 40px;
+            width: 70px; height: 70px;
+            background-color: var(--white); color: var(--text-dark);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            cursor: pointer; z-index: 1000; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .floating-lang-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .floating-lang-btn::after {
+            content: ''; position: absolute; top: 100%; left: -20px; right: -20px; height: 35px;
+        }
+        .lang-dropdown {
+            position: absolute; top: calc(100% + 15px); right: 0; background: var(--white);
+            border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; overflow: hidden;
+            opacity: 0; pointer-events: none; transform: translateY(-10px); transition: 0.3s ease;
+            min-width: 120px; border: 1px solid rgba(0,0,0,0.05);
+        }
+        .floating-lang-btn:hover .lang-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .lang-dropdown a {
+            padding: 12px 20px; color: var(--text-main); transition: 0.2s; font-size: 0.95rem; text-decoration: none; text-align: center;
+        }
+        .lang-dropdown a:hover, .lang-dropdown a.active { background: #f0f6fc; color: var(--accent); }
         .footer {
             background: transparent;
             color: var(--white); padding: 60px 0 40px;
@@ -323,11 +340,7 @@
             margin: 60px auto 0;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
         }
-        .footer-emblem img {
-            width: 60%;
-            height: auto;
-            object-fit: contain;
-        }
+        .footer-emblem img { width: 60%; height: auto; object-fit: contain; }
         .footer-bottom {
             margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
             font-size: 0.9rem; color: rgba(255,255,255,0.6);
@@ -351,39 +364,41 @@
             .chat-layout { flex-direction: column; padding: 0 20px; }
             .chat-text h2 { text-align: center; }
             .floating-chat-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
+            .floating-lang-btn { top: 20px; right: 20px; width: 50px; height: 50px; font-size: 14px; }
             .contact-large { font-size: 1.1rem; flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
-
     <div class="mobile-menu" id="mobile-menu">
-        <a href="#about" class="mobile-link">О нас</a>
-        <a href="#islands" class="mobile-link">Достопримечательности</a>
-        <a href="#schedule" class="mobile-link">Расписание</a>
-        <a href="#booking" class="mobile-link">Бронь</a>
-        <a href="#contacts" class="mobile-link">Контакты</a>
-        <a href="#bot-section" class="mobile-link nav-btn" style="margin-top: 20px;">Гид-бот</a>
+        <a href="#about" class="mobile-link" data-i18n="nav_about">О нас</a>
+        <a href="#islands" class="mobile-link" data-i18n="nav_sights">Достопримечательности</a>
+        <a href="#schedule" class="mobile-link" data-i18n="nav_schedule">Расписание</a>
+        <a href="#booking" class="mobile-link" data-i18n="nav_booking">Бронь</a>
+        <a href="#contacts" class="mobile-link" data-i18n="nav_contacts">Контакты</a>
+        <div class="mobile-lang">
+            <a href="#" onclick="changeLang('ru', event)" class="active">RU</a>
+            <a href="#" onclick="changeLang('en', event)">EN</a>
+            <a href="#" onclick="changeLang('zh', event)">ZH</a>
+        </div>
+        <a href="#bot-section" class="mobile-link nav-btn" style="margin-top: 20px;" data-i18n="nav_bot">Гид-бот</a>
     </div>
 
     <div class="navbar-wrapper">
         <nav class="navbar">
             <div class="nav-links-left">
-                <a href="#about">О нас</a>
-                <a href="#islands">Достопримечательности</a>
-                <a href="#schedule">Расписание</a>
+                <a href="#about" data-i18n="nav_about">О нас</a>
+                <a href="#islands" data-i18n="nav_sights">Достопримечательности</a>
+                <a href="#schedule" data-i18n="nav_schedule">Расписание</a>
             </div>
-            
             <div class="nav-logo">
                 <img src="logo.png" alt="Логотип">
             </div>
-
             <div class="nav-links-right">
-                <a href="#booking">Бронь</a>
-                <a href="#contacts">Контакты</a>
-                <a href="#bot-section" class="nav-btn">Гид-бот</a>
+                <a href="#booking" data-i18n="nav_booking">Бронь</a>
+                <a href="#contacts" data-i18n="nav_contacts">Контакты</a>
+                <a href="#bot-section" class="nav-btn" data-i18n="nav_bot">Гид-бот</a>
             </div>
-            
             <div class="burger-menu" id="burger-menu">
                 <span></span>
                 <span></span>
@@ -394,10 +409,10 @@
 
     <div class="hero" id="about">
         <div class="hero-content">
-            <h1 class="animate-hero-1">Архипелаг Императрицы Евгении</h1>
-            <p class="animate-hero-2">Эти воды помнят не только шум прибоя, но и пушечные залпы великих держав. Здесь переплелись судьбы русских первооткрывателей, английских шпионов и французских аристократов. Отправимся в плавание, где каждый поворот штурвала открывает новую главу истории.</p>
+            <h1 class="animate-hero-1" data-i18n="hero_title">Архипелаг Императрицы Евгении</h1>
+            <p class="animate-hero-2" data-i18n="hero_desc">Эти воды помнят не только шум прибоя, но и пушечные залпы великих держав. Здесь переплелись судьбы русских первооткрывателей, английских шпионов и французских аристократов. Отправимся в плавание, где каждый поворот штурвала открывает новую главу истории.</p>
             <div class="animate-hero-3">
-                <a href="#islands" class="btn-text">Узнать подробнее</a>
+                <a href="#islands" class="btn-text" data-i18n="hero_btn">Узнать подробнее</a>
             </div>
         </div>
         <div class="hero-image animate-hero-bg"></div>
@@ -405,27 +420,27 @@
 
     <div class="section" id="islands">
         <div class="container fade-on-scroll">
-            <h2>Объекты исследования,<br>скрытые за Русским островом</h2>
+            <h2 data-i18n="sights_title">Объекты исследования,<br>скрытые за Русским островом</h2>
             <div class="islands-grid">
                 <div class="island-card glass-card">
-                    <img src="https://optim.tildacdn.pub/tild6336-3636-4534-a138-643463333338/-/cover/432x432/center/center/-/format/webp/__.jpg.webp" alt="Остров Попова">
+                    <img src="https://optim.tildacdn.pub/tild6336-3636-4534-a138-643463333338/-/cover/432x432/center/center/-/format/webp/__.jpg.webp" alt="Остров Попова" loading="lazy">
                     <div class="island-card-body">
-                        <h3>Остров Попова</h3>
-                        <p>Тишина и спокойствие вдали от бесконечных магистралей и пробок, в окружении тёплых лагун с песчаными пляжами.</p>
+                        <h3 data-i18n="sight_1_title">Остров Попова</h3>
+                        <p data-i18n="sight_1_desc">Тишина и спокойствие вдали от бесконечных магистралей и пробок, в окружении тёплых лагун с песчаными пляжами.</p>
                     </div>
                 </div>
                 <div class="island-card glass-card">
-                    <img src="https://optim.tildacdn.pub/tild3036-3739-4464-b235-643564353165/-/cover/432x432/center/center/-/format/webp/noroot.png.webp" alt="Остров Рейнеке">
+                    <img src="https://optim.tildacdn.pub/tild3036-3739-4464-b235-643564353165/-/cover/432x432/center/center/-/format/webp/noroot.png.webp" alt="Остров Рейнеке" loading="lazy">
                     <div class="island-card-body">
-                        <h3>Остров Рейнеке</h3>
-                        <p>Неприступный, охваченный яркими цветами, словно пламенем, хранящий в себе золу прошлого.</p>
+                        <h3 data-i18n="sight_2_title">Остров Рейнеке</h3>
+                        <p data-i18n="sight_2_desc">Неприступный, охваченный яркими цветами, словно пламенем, хранящий в себе золу прошлого.</p>
                     </div>
                 </div>
                 <div class="island-card glass-card">
-                    <img src="https://optim.tildacdn.pub/tild3231-3463-4865-b461-386363393437/-/cover/432x432/center/center/-/format/webp/___1.jpeg.webp" alt="Остров Шкота">
+                    <img src="https://optim.tildacdn.pub/tild3231-3463-4865-b461-386363393437/-/cover/432x432/center/center/-/format/webp/___1.jpeg.webp" alt="Остров Шкота" loading="lazy">
                     <div class="island-card-body">
-                        <h3>Остров Шкота</h3>
-                        <p>Оббитые волнами скалы, словно Иорданская Петра, показывают всё величие природы на Краю Света.</p>
+                        <h3 data-i18n="sight_3_title">Остров Шкота</h3>
+                        <p data-i18n="sight_3_desc">Оббитые волнами скалы, словно Иорданская Петра, показывают всё величие природы на Краю Света.</p>
                     </div>
                 </div>
             </div>
@@ -435,30 +450,28 @@
     <div class="section" id="schedule">
         <div class="bg-blob blob-1"></div>
         <div class="bg-blob blob-2"></div>
-        
         <div class="container fade-on-scroll">
-            <h2>Ближайшие экскурсии</h2>
-            <p class="text-center schedule-subtitle">Отправляемся в плавание! Актуальное расписание.</p>
-            
+            <h2 data-i18n="schedule_title">Ближайшие экскурсии</h2>
+            <p class="text-center schedule-subtitle" data-i18n="schedule_desc">Отправляемся в плавание! Актуальное расписание.</p>
             <div class="schedule-grid">
                 <div class="schedule-card glass-card">
-                    <div class="schedule-date">20 июня<span class="schedule-badge">Среда</span></div>
+                    <div class="schedule-date"><span data-i18n="date_1">20 июня</span><span class="schedule-badge" data-i18n="date_1_badge">Суббота</span></div>
                     <div class="schedule-details">
-                        <strong>09:00</strong> — Отправление от Мариинского театра<br>
-                        <strong>11:00</strong> — Добираемся до о. Шкота<br>
-                        <strong>12:30</strong> — Остановка у о. Попова<br>
-                        <strong>15:00</strong> — Появляемся на о. Рейнеке<br>
-                        <strong>18:00</strong> — Возвращаемся на о. Русский
+                        <div data-i18n="sch_1"><strong>09:00</strong> — Отправление от Мариинского театра</div>
+                        <div data-i18n="sch_2"><strong>11:00</strong> — Добираемся до о. Шкота</div>
+                        <div data-i18n="sch_3"><strong>12:30</strong> — Остановка у о. Попова</div>
+                        <div data-i18n="sch_4"><strong>15:00</strong> — Появляемся на о. Рейнеке</div>
+                        <div data-i18n="sch_5"><strong>18:00</strong> — Возвращаемся на о. Русский</div>
                     </div>
                 </div>
                 <div class="schedule-card glass-card">
-                    <div class="schedule-date">22 июня<span class="schedule-badge">Пятница</span></div>
+                    <div class="schedule-date"><span data-i18n="date_2">22 июня</span><span class="schedule-badge" data-i18n="date_2_badge">Понедельник</span></div>
                     <div class="schedule-details">
-                        <strong>09:00</strong> — Отправление от Мариинского театра<br>
-                        <strong>11:00</strong> — Добираемся до о. Шкота<br>
-                        <strong>12:30</strong> — Остановка у о. Попова<br>
-                        <strong>15:00</strong> — Появляемся на о. Рейнеке<br>
-                        <strong>18:00</strong> — Возвращаемся на о. Русский
+                        <div data-i18n="sch_1"><strong>09:00</strong> — Отправление от Мариинского театра</div>
+                        <div data-i18n="sch_2"><strong>11:00</strong> — Добираемся до о. Шкота</div>
+                        <div data-i18n="sch_3"><strong>12:30</strong> — Остановка у о. Попова</div>
+                        <div data-i18n="sch_4"><strong>15:00</strong> — Появляемся на о. Рейнеке</div>
+                        <div data-i18n="sch_5"><strong>18:00</strong> — Возвращаемся на о. Русский</div>
                     </div>
                 </div>
             </div>
@@ -467,54 +480,50 @@
 
     <div class="section" id="booking">
         <div class="bg-blob blob-3"></div>
-        
         <div class="container fade-on-scroll">
             <div class="booking-layout">
                 <div class="booking-info">
-                    <h2>Свободное бронирование</h2>
-                    <p style="font-size: 1.15rem;">Выберите желаемый маршрут и формат поездки. Мы всё организуем, чтобы вы могли просто наслаждаться путешествием.</p>
+                    <h2 data-i18n="book_title">Свободное бронирование</h2>
+                    <p style="font-size: 1.15rem;" data-i18n="book_desc">Выберите желаемый маршрут и формат поездки. Мы всё организуем, чтобы вы могли просто наслаждаться путешествием.</p>
                     <ul>
-                        <li><span>🛥️</span> Индивидуальный подход к каждому</li>
-                        <li><span>🌊</span> Захватывающие виды Приморья</li>
-                        <li><span>🛡️</span> Полная безопасность в пути</li>
+                        <li data-i18n="book_li_1"><span>🛥️</span> Индивидуальный подход к каждому</li>
+                        <li data-i18n="book_li_2"><span>🌊</span> Захватывающие виды Приморья</li>
+                        <li data-i18n="book_li_3"><span>🛡️</span> Полная безопасность в пути</li>
                     </ul>
                 </div>
-                
                 <div class="form-container glass-card">
                     <form id="premium-form">
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <input type="text" class="form-input" required id="f-name">
-                                <label class="form-label">Ваше имя</label>
+                                <label class="form-label" data-i18n="label_name">Ваше имя</label>
                             </div>
                             <div class="form-group full-width">
                                 <input type="tel" class="form-input" required id="f-phone">
-                                <label class="form-label">Телефон</label>
+                                <label class="form-label" data-i18n="label_phone">Телефон</label>
                             </div>
                             <div class="form-group full-width">
                                 <select class="form-input" required id="f-island">
                                     <option value="" disabled selected hidden></option>
-                                    <option value="popov">Остров Попова</option>
-                                    <option value="reyneke">Остров Рейнеке</option>
-                                    <option value="shkota">Остров Шкота</option>
-                                    <option value="all">Полная экскурсия (Все острова)</option>
+                                    <option value="popov" data-i18n="opt_popov">Остров Попова</option>
+                                    <option value="reyneke" data-i18n="opt_reyneke">Остров Рейнеке</option>
+                                    <option value="shkota" data-i18n="opt_shkota">Остров Шкота</option>
+                                    <option value="all" data-i18n="opt_all">Полная экскурсия (Все острова)</option>
                                 </select>
-                                <label class="form-label">Желаемый маршрут</label>
+                                <label class="form-label" data-i18n="label_route">Желаемый маршрут</label>
                             </div>
                             <div class="form-group full-width">
                                 <select class="form-input" required id="f-tour">
                                     <option value="" disabled selected hidden></option>
-                                    <option value="ind">Индивидуальная экскурсия (20 000₽)</option>
-                                    <option value="grp">Групповая экскурсия (15 000₽)</option>
+                                    <option value="ind" data-i18n="opt_ind">Индивидуальная экскурсия (20 000₽)</option>
+                                    <option value="grp" data-i18n="opt_grp">Групповая экскурсия (15 000₽)</option>
                                 </select>
-                                <label class="form-label">Формат поездки</label>
+                                <label class="form-label" data-i18n="label_format">Формат поездки</label>
                             </div>
                             <div class="form-group full-width">
-                                <button type="submit" class="btn" id="submit-btn" style="width: 100%;">Отправить заявку</button>
+                                <button type="submit" class="btn" id="submit-btn" style="width: 100%;" data-i18n="btn_submit">Отправить заявку</button>
                             </div>
-                            <div id="form-success-message">
-                                Заявка успешно оформлена! Мы свяжемся с вами в ближайшее время для уточнения деталей.
-                            </div>
+                            <div id="form-success-message"></div>
                         </div>
                     </form>
                 </div>
@@ -526,16 +535,13 @@
         <div class="container fade-on-scroll">
             <div class="chat-layout">
                 <div class="chat-text">
-                    <h2>Подобрать<br>экскурсию</h2>
-                    <p>Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он расскажет о маршрутах, поможет определиться с форматом путешествия и автоматически заполнит форму бронирования для вас.</p>
+                    <h2 data-i18n="bot_title">Подобрать<br>экскурсию</h2>
+                    <p data-i18n="bot_desc">Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он расскажет о маршрутах, поможет определиться с форматом путешествия и автоматически заполнит форму бронирования для вас.</p>
                 </div>
-                
                 <div class="chat-container glass-card">
-                    <div class="chat-header">Гид-ассистент онлайн <span class="online-dot">🟢</span></div>
-                    <div class="chat-messages" id="chat-messages">
-                    </div>
-                    <div class="chat-options" id="chat-options">
-                    </div>
+                    <div class="chat-header"><span data-i18n="bot_header">Гид-ассистент онлайн</span> <span class="online-dot">🟢</span></div>
+                    <div class="chat-messages" id="chat-messages"></div>
+                    <div class="chat-options" id="chat-options"></div>
                 </div>
             </div>
         </div>
@@ -543,28 +549,209 @@
 
     <div class="footer" id="contacts">
         <div class="container footer-content fade-on-scroll">
-            <h2>Всё когда-то появлялось на карте впервые.</h2>
-            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 40px;">Свяжитесь с нами для организации вашего идеального путешествия.</p>
-            
-            <div class="contact-large">📞 8 (999) 420-67-67</div>
-            <div class="contact-large">✉️ empresseugene@mail.ru</div>
-
-            
+            <h2 data-i18n="foot_title">Всё когда-то появлялось на карте впервые.</h2>
+            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 40px;" data-i18n="foot_desc">Свяжитесь с нами для организации вашего идеального путешествия.</p>
+            <div class="contact-large">📞 <strong>8 (999) 420-67-67</strong></div>
+            <div class="contact-large">✉️ <strong>empresseugene@mail.ru</strong></div>
+            <div class="contact-large"><a href="https://t.me/lexalovesjazz" target="_blank">✈️ <strong>@lexalovesjazz</strong></a></div>
             <div class="footer-emblem">
-                <img src="logo.png" alt="Эмблема компании">
+                <img src="logo.png" alt="Эмблема компании" loading="lazy">
             </div>
-
-            <div class="footer-bottom">
+            <div class="footer-bottom" data-i18n="foot_copy">
                 &copy; 2026 Архипелаг Императрицы Евгении. Все права защищены.
             </div>
         </div>
     </div>
 
-    <div class="floating-chat-btn" id="floating-chat-btn" title="Помощь с выбором">
-        💬
+    <div class="floating-lang-btn" id="lang-btn">
+        <span id="current-lang-text">RU</span>
+        <div class="lang-dropdown">
+            <a href="#" onclick="changeLang('ru', event)" class="active">Русский</a>
+            <a href="#" onclick="changeLang('en', event)">English</a>
+            <a href="#" onclick="changeLang('zh', event)">中文</a>
+        </div>
     </div>
 
+    <div class="floating-chat-btn" id="floating-chat-btn" title="Помощь с выбором">💬</div>
+
     <script>
+        const i18n = {
+            ru: {
+                nav_about: "О нас",
+                nav_sights: "Достопримечательности",
+                nav_schedule: "Расписание",
+                nav_booking: "Бронь",
+                nav_contacts: "Контакты",
+                nav_bot: "Гид-бот",
+                hero_title: "Архипелаг Императрицы Евгении",
+                hero_desc: "Эти воды помнят не только шум прибоя, но и пушечные залпы великих держав. Здесь переплелись судьбы русских первооткрывателей, английских шпионов и французских аристократов. Отправимся в плавание, где каждый поворот штурвала открывает новую главу истории.",
+                hero_btn: "Узнать подробнее",
+                sights_title: "Объекты исследования,<br>скрытые за Русским островом",
+                sight_1_title: "Остров Попова",
+                sight_1_desc: "Тишина и спокойствие вдали от бесконечных магистралей и пробок, в окружении тёплых лагун с песчаными пляжами.",
+                sight_2_title: "Остров Рейнеке",
+                sight_2_desc: "Неприступный, охваченный яркими цветами, словно пламенем, хранящий в себе золу прошлого.",
+                sight_3_title: "Остров Шкота",
+                sight_3_desc: "Оббитые волнами скалы, словно Иорданская Петра, показывают всё величие природы на Краю Света.",
+                schedule_title: "Ближайшие экскурсии",
+                schedule_desc: "Отправляемся в плавание! Актуальное расписание.",
+                date_1: "20 июня",
+                date_1_badge: "Суббота",
+                date_2: "22 июня",
+                date_2_badge: "Понедельник",
+                sch_1: "<strong>09:00</strong> — Отправление от Мариинского театра",
+                sch_2: "<strong>11:00</strong> — Добираемся до о. Шкота",
+                sch_3: "<strong>12:30</strong> — Остановка у о. Попова",
+                sch_4: "<strong>15:00</strong> — Появляемся на о. Рейнеке",
+                sch_5: "<strong>18:00</strong> — Возвращаемся на о. Русский",
+                book_title: "Свободное бронирование",
+                book_desc: "Выберите желаемый маршрут и формат поездки. Мы всё организуем, чтобы вы могли просто наслаждаться путешествием.",
+                book_li_1: "<span>🛥️</span> Индивидуальный подход к каждому",
+                book_li_2: "<span>🌊</span> Захватывающие виды Приморья",
+                book_li_3: "<span>🛡️</span> Полная безопасность в пути",
+                label_name: "Ваше имя",
+                label_phone: "Телефон",
+                label_route: "Желаемый маршрут",
+                opt_popov: "Остров Попова",
+                opt_reyneke: "Остров Рейнеке",
+                opt_shkota: "Остров Шкота",
+                opt_all: "Полная экскурсия (Все острова)",
+                label_format: "Формат поездки",
+                opt_ind: "Индивидуальная экскурсия (20 000₽)",
+                opt_grp: "Групповая экскурсия (15 000₽)",
+                btn_submit: "Отправить заявку",
+                bot_title: "Подобрать<br>экскурсию",
+                bot_desc: "Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он задаст пару вопросов и автоматически подберет идеальный тур под ваши пожелания.",
+                bot_header: "Гид-ассистент онлайн",
+                foot_title: "Всё когда-то появлялось на карте впервые.",
+                foot_desc: "Свяжитесь с нами для организации вашего идеального путешествия.",
+                foot_copy: "&copy; 2026 Архипелаг Императрицы Евгении. Все права защищены.",
+                msg_success: "Заявка успешно оформлена! Мы свяжемся с вами в ближайшее время для уточнения деталей."
+            },
+            en: {
+                nav_about: "About",
+                nav_sights: "Sights",
+                nav_schedule: "Schedule",
+                nav_booking: "Booking",
+                nav_contacts: "Contacts",
+                nav_bot: "Guide Bot",
+                hero_title: "Empress Eugenie Archipelago",
+                hero_desc: "These waters remember not only the sound of the surf, but also the cannon volleys of great powers. Here, the fates of Russian discoverers, English spies, and French aristocrats intertwined. Let's set sail where every turn of the wheel opens a new chapter in history.",
+                hero_btn: "Learn more",
+                sights_title: "Research objects,<br>hidden behind Russky Island",
+                sight_1_title: "Popov Island",
+                sight_1_desc: "Peace and quiet away from endless highways and traffic jams, surrounded by warm lagoons with sandy beaches.",
+                sight_2_title: "Reyneke Island",
+                sight_2_desc: "Impregnable, covered with bright colors like a flame, keeping the ashes of the past.",
+                sight_3_title: "Shkota Island",
+                sight_3_desc: "Wave-beaten cliffs, like the Jordanian Petra, show all the majesty of nature at the Edge of the World.",
+                schedule_title: "Upcoming tours",
+                schedule_desc: "We are setting sail! Current schedule.",
+                date_1: "June 20",
+                date_1_badge: "Saturday",
+                date_2: "June 22",
+                date_2_badge: "Monday",
+                sch_1: "<strong>09:00</strong> — Departure from Mariinsky Theatre",
+                sch_2: "<strong>11:00</strong> — Arriving at Shkota Island",
+                sch_3: "<strong>12:30</strong> — Stop at Popov Island",
+                sch_4: "<strong>15:00</strong> — Arriving at Reyneke Island",
+                sch_5: "<strong>18:00</strong> — Returning to Russky Island",
+                book_title: "Free Booking",
+                book_desc: "Choose your desired route and trip format. We will organize everything so you can simply enjoy the journey.",
+                book_li_1: "<span>🛥️</span> Individual approach to everyone",
+                book_li_2: "<span>🌊</span> Breathtaking views of Primorye",
+                book_li_3: "<span>🛡️</span> Complete safety on the way",
+                label_name: "Your Name",
+                label_phone: "Phone",
+                label_route: "Desired Route",
+                opt_popov: "Popov Island",
+                opt_reyneke: "Reyneke Island",
+                opt_shkota: "Shkota Island",
+                opt_all: "Full Tour (All Islands)",
+                label_format: "Trip Format",
+                opt_ind: "Individual Tour (20 000₽)",
+                opt_grp: "Group Tour (15 000₽)",
+                btn_submit: "Submit Request",
+                bot_title: "Find a<br>Tour",
+                bot_desc: "Not sure what to choose? Use our interactive assistant. It will ask a couple of questions and automatically select the ideal tour for your wishes.",
+                bot_header: "Guide Assistant Online",
+                foot_title: "Everything appeared on the map for the first time once.",
+                foot_desc: "Contact us to organize your ideal journey.",
+                foot_copy: "&copy; 2026 Empress Eugenie Archipelago. All rights reserved.",
+                msg_success: "Request submitted successfully! We will contact you shortly."
+            },
+            zh: {
+                nav_about: "关于我们",
+                nav_sights: "景点",
+                nav_schedule: "日程安排",
+                nav_booking: "预订",
+                nav_contacts: "联系方式",
+                nav_bot: "导游机器人",
+                hero_title: "尤金妮皇后群岛",
+                hero_desc: "这些水域不仅记录了海浪的声音，还记录了大国大炮的齐射。在这里，俄罗斯发现者、英国间谍和法国贵族的命运交织在一起。让我们起航吧，每一次转动方向盘都会开启历史的新篇章。",
+                hero_btn: "了解更多",
+                sights_title: "隐藏在俄罗斯岛<br>背后的研究对象",
+                sight_1_title: "波波夫岛",
+                sight_1_desc: "远离无尽的高速公路和交通拥堵的宁静，被带沙滩的温暖泻湖所环绕。",
+                sight_2_title: "雷涅克岛",
+                sight_2_desc: "坚不可摧，像火焰一样被鲜艳的色彩覆盖，保留着过去的灰烬。",
+                sight_3_title: "什科塔岛",
+                sight_3_desc: "被海浪拍打的悬崖，就像约旦的佩特拉，展现了世界边缘自然的所有威严。",
+                schedule_title: "即将到来的旅行",
+                schedule_desc: "我们要起航了！当前时间表。",
+                date_1: "6月20日",
+                date_1_badge: "星期六",
+                date_2: "6月22日",
+                date_2_badge: "星期一",
+                sch_1: "<strong>09:00</strong> — 从马林斯基剧院出发",
+                sch_2: "<strong>11:00</strong> — 到达什科塔岛",
+                sch_3: "<strong>12:30</strong> — 在波波夫岛停留",
+                sch_4: "<strong>15:00</strong> — 到达雷涅克岛",
+                sch_5: "<strong>18:00</strong> — 返回俄罗斯岛",
+                book_title: "免费预订",
+                book_desc: "选择您想要的路线和旅行形式。我们将组织一切，以便您可以简单地享受旅程。",
+                book_li_1: "<span>🛥️</span> 对每个人的个性化方法",
+                book_li_2: "<span>🌊</span> 滨海边疆区令人惊叹的景色",
+                book_li_3: "<span>🛡️</span> 途中的完全安全",
+                label_name: "您的名字",
+                label_phone: "电话",
+                label_route: "期望路线",
+                opt_popov: "波波夫岛",
+                opt_reyneke: "雷涅克岛",
+                opt_shkota: "什科塔岛",
+                opt_all: "全程游览（所有岛屿）",
+                label_format: "旅行形式",
+                opt_ind: "个人游览 (20 000₽)",
+                opt_grp: "团体游览 (15 000₽)",
+                btn_submit: "提交请求",
+                bot_title: "寻找<br>旅行",
+                bot_desc: "不确定选择什么？使用我们的交互式助手。它会问几个问题，并自动为您选择理想的旅行。",
+                bot_header: "在线导游助手",
+                foot_title: "一切都曾首次出现在地图上。",
+                foot_desc: "联系我们，安排您理想的旅程。",
+                foot_copy: "&copy; 2026 尤金妮皇后群岛。版权所有。",
+                msg_success: "申请已成功提交！我们将尽快与您联系。"
+            }
+        };
+
+        let currentLang = 'ru';
+
+        function changeLang(lang, event) {
+            if(event) event.preventDefault();
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+            document.getElementById('current-lang-text').innerText = lang.toUpperCase();
+            const links = document.querySelectorAll('.mobile-lang a, .lang-dropdown a');
+            links.forEach(l => l.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+            initBot();
+        }
+
         const burger = document.getElementById('burger-menu');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -581,6 +768,14 @@
                 mobileMenu.classList.remove('active');
                 document.body.style.overflow = '';
             });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (mobileMenu.classList.contains('active')) {
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
         document.getElementById('floating-chat-btn').addEventListener('click', () => {
@@ -614,8 +809,9 @@
             
             btn.style.backgroundColor = '#10b981'; 
             btn.style.borderColor = '#10b981';
-            btn.innerText = '✓ Отправлено';
+            btn.innerText = '✓';
             
+            msgBox.innerHTML = i18n[currentLang].msg_success;
             msgBox.style.display = 'block'; 
             
             this.reset();
@@ -631,21 +827,81 @@
         const chatMessages = document.getElementById('chat-messages');
         const chatOptions = document.getElementById('chat-options');
 
-        const destinations = {
-            popov: {
-                id: "popov",
-                title: "Остров Попова",
-                desc: "Идеально для тех, кто ищет уединение. Тишина вдали от мегаполиса, окруженная тёплыми лагунами с песчаными пляжами. Отличный вариант для спокойной прогулки."
+        const botData = {
+            ru: {
+                hello: "Здравствуйте! Я ваш Гид-ассистент. Давайте подберем идеальное путешествие для вас.",
+                btn_quiz: "Подобрать идеальный тур",
+                btn_all: "Смотреть все маршруты",
+                btn_contacts: "Наши контакты",
+                quiz_q1: "Чего вы ждете от поездки больше всего?",
+                q1_a1: "Уединение и спокойствие",
+                q1_a2: "Яркие фото и история",
+                q1_a3: "Суровые скалы и мощь",
+                quiz_res: "Основываясь на ваших предпочтениях, вам идеально подойдет ",
+                island_popov: "Остров Попова",
+                island_reyneke: "Остров Рейнеке",
+                island_shkota: "Остров Шкота",
+                desc_popov: "Тишина вдали от мегаполиса, окруженная тёплыми лагунами с песчаными пляжами. Отличный вариант для спокойной прогулки.",
+                desc_reyneke: "Неприступный, покрытый яркими цветами, словно пламенем. Остров хранит в себе золу прошлого и удивительные истории.",
+                desc_shkota: "Оббитые волнами скалы, словно Иорданская Петра, покажут вам всё величие природы на Краю Света.",
+                ask_format: "Какой формат экскурсии организуем?",
+                btn_ind: "Индивидуальный (20 000₽)",
+                btn_grp: "В мини-группе (15 000₽)",
+                btn_other: "Смотреть другие острова",
+                confirm: "Отличный выбор! Формат <b>{format}</b> на <b>{island}</b>.<br><br>Я сейчас перенесу вас к форме бронирования и <b>автоматически заполню</b> маршрут и тариф.",
+                btn_go: "Отлично, к оформлению!",
+                contacts: "Связаться напрямую можно по телефону <b>8 (999) 420-67-67</b>, в Telegram <a href='https://t.me/lexalovesjazz' target='_blank'><b>@lexalovesjazz</b></a> или написать на почту <b>empresseugene@mail.ru</b>",
+                btn_start: "В начало"
             },
-            reyneke: {
-                id: "reyneke",
-                title: "Остров Рейнеке",
-                desc: "Захватывающие виды! Неприступный, покрытый яркими цветами, словно пламенем. Остров хранит в себе золу прошлого и удивительные истории."
+            en: {
+                hello: "Hello! I am your Guide Assistant. Let's find the perfect journey for you.",
+                btn_quiz: "Find the perfect tour",
+                btn_all: "See all routes",
+                btn_contacts: "Our contacts",
+                quiz_q1: "What are you looking forward to the most from the trip?",
+                q1_a1: "Privacy and tranquility",
+                q1_a2: "Bright photos and history",
+                q1_a3: "Harsh cliffs and power",
+                quiz_res: "Based on your preferences, the ideal fit for you is ",
+                island_popov: "Popov Island",
+                island_reyneke: "Reyneke Island",
+                island_shkota: "Shkota Island",
+                desc_popov: "Silence away from the metropolis, surrounded by warm lagoons with sandy beaches. An excellent option for a quiet walk.",
+                desc_reyneke: "Impregnable, covered with bright colors. The island keeps the ashes of the past and amazing stories.",
+                desc_shkota: "Wave-beaten cliffs show all the majesty of nature at the Edge of the World.",
+                ask_format: "What tour format should we organize?",
+                btn_ind: "Individual (20 000₽)",
+                btn_grp: "Mini-group (15 000₽)",
+                btn_other: "See other islands",
+                confirm: "Excellent choice! <b>{format}</b> to <b>{island}</b>.<br><br>I will now transfer you to the booking form and <b>automatically fill in</b> the route and rate.",
+                btn_go: "Great, let's book!",
+                contacts: "You can contact us directly by phone <b>8 (999) 420-67-67</b>, Telegram <a href='https://t.me/lexalovesjazz' target='_blank'><b>@lexalovesjazz</b></a> or email <b>empresseugene@mail.ru</b>",
+                btn_start: "Start over"
             },
-            shkota: {
-                id: "shkota",
-                title: "Остров Шкота",
-                desc: "Для любителей суровой романтики. Оббитые волнами скалы, словно Иорданская Петра, покажут вам всё величие природы на Краю Света."
+            zh: {
+                hello: "你好！我是您的导游助手。让我们为您找到完美的旅程。",
+                btn_quiz: "寻找完美旅行",
+                btn_all: "查看所有路线",
+                btn_contacts: "联系方式",
+                quiz_q1: "您对这次旅行最期待什么？",
+                q1_a1: "隐私与宁静",
+                q1_a2: "美丽的照片和历史",
+                q1_a3: "严酷的悬崖与力量",
+                quiz_res: "根据您的喜好，最适合您的是 ",
+                island_popov: "波波夫岛",
+                island_reyneke: "雷涅克岛",
+                island_shkota: "什科塔岛",
+                desc_popov: "远离大都市的喧嚣，被带沙滩的温暖泻湖所环绕。适合安静散步的绝佳选择。",
+                desc_reyneke: "坚不可摧，被鲜艳的色彩覆盖。岛上保留着过去的灰烬和惊人的故事。",
+                desc_shkota: "被海浪拍打的悬崖展现了世界边缘自然的所有威严。",
+                ask_format: "我们应该组织哪种旅行形式？",
+                btn_ind: "个人 (20 000₽)",
+                btn_grp: "小团体 (15 000₽)",
+                btn_other: "查看其他岛屿",
+                confirm: "极好的选择！前往 <b>{island}</b> 的 <b>{format}</b>。<br><br>我现在将您转到预订表格并<b>自动填写</b>路线和费率。",
+                btn_go: "太好了，去预订吧！",
+                contacts: "您可以直接通过电话 <b>8 (999) 420-67-67</b>、Telegram <a href='https://t.me/lexalovesjazz' target='_blank'><b>@lexalovesjazz</b></a> 或电子邮件 <b>empresseugene@mail.ru</b> 联系我们。",
+                btn_start: "重新开始"
             }
         };
 
@@ -674,38 +930,70 @@
 
         function initBot() {
             chatMessages.innerHTML = "";
-            addMsg("Здравствуйте! Я ваш Гид-ассистент. С удовольствием расскажу о наших маршрутах и помогу спланировать идеальный день на архипелаге.", "bot");
+            addMsg(botData[currentLang].hello, "bot");
             renderOptions([
-                { text: "Посмотреть экскурсии", action: showExcursions },
-                { text: "Наши контакты", action: showContacts }
+                { text: botData[currentLang].btn_quiz, action: startQuiz },
+                { text: botData[currentLang].btn_all, action: showAllExcursions },
+                { text: botData[currentLang].btn_contacts, action: showContacts }
             ]);
         }
 
-        function showExcursions() {
-            addMsg("У нас есть три основных направления, каждое со своим уникальным характером. Какой остров вам интересен?", "bot");
+        function startQuiz() {
+            addMsg(botData[currentLang].quiz_q1, "bot");
             renderOptions([
-                { text: "Остров Попова", action: () => showIslandDetails('popov') },
-                { text: "Остров Рейнеке", action: () => showIslandDetails('reyneke') },
-                { text: "Остров Шкота", action: () => showIslandDetails('shkota') }
+                { text: botData[currentLang].q1_a1, action: () => processQuiz('popov') },
+                { text: botData[currentLang].q1_a2, action: () => processQuiz('reyneke') },
+                { text: botData[currentLang].q1_a3, action: () => processQuiz('shkota') }
+            ]);
+        }
+
+        function processQuiz(islandId) {
+            const t = botData[currentLang];
+            const title = t["island_" + islandId];
+            const desc = t["desc_" + islandId];
+            
+            addMsg(`${t.quiz_res}<b>${title}</b>!<br><br>${desc}<br><br>${t.ask_format}`, "bot");
+            
+            renderOptions([
+                { text: t.btn_ind, action: () => confirmBooking(islandId, title, "ind", t.btn_ind) },
+                { text: t.btn_grp, action: () => confirmBooking(islandId, title, "grp", t.btn_grp) },
+                { text: t.btn_all, action: showAllExcursions }
+            ]);
+        }
+
+        function showAllExcursions() {
+            const t = botData[currentLang];
+            addMsg(botData[currentLang].btn_all + ":", "bot");
+            renderOptions([
+                { text: t.island_popov, action: () => showIslandDetails('popov') },
+                { text: t.island_reyneke, action: () => showIslandDetails('reyneke') },
+                { text: t.island_shkota, action: () => showIslandDetails('shkota') }
             ]);
         }
 
         function showIslandDetails(islandId) {
-            const island = destinations[islandId];
-            addMsg(`<b>${island.title}</b><br><br>${island.desc}<br><br>Базовая стоимость поездки начинается от 15 000₽. Какой формат экскурсии вы бы предпочли?`, "bot");
+            const t = botData[currentLang];
+            const title = t["island_" + islandId];
+            const desc = t["desc_" + islandId];
+            
+            addMsg(`<b>${title}</b><br><br>${desc}<br><br>${t.ask_format}`, "bot");
             
             renderOptions([
-                { text: "Индивидуальный (20 000₽)", action: () => confirmBooking(island.id, island.title, "ind", "Индивидуальная экскурсия") },
-                { text: "В мини-группе (15 000₽)", action: () => confirmBooking(island.id, island.title, "grp", "Групповая экскурсия") },
-                { text: "Смотреть другие острова", action: showExcursions }
+                { text: t.btn_ind, action: () => confirmBooking(islandId, title, "ind", t.btn_ind) },
+                { text: t.btn_grp, action: () => confirmBooking(islandId, title, "grp", t.btn_grp) },
+                { text: t.btn_other, action: showAllExcursions }
             ]);
         }
 
         function confirmBooking(islandId, islandName, formatId, formatName) {
-            addMsg(`Отличный выбор! Мы организуем для вас <b>${formatName.toLowerCase()}</b> на <b>${islandName}</b>.<br><br>Я сейчас перенесу вас к форме бронирования и <b>автоматически заполню</b> выбранный маршрут и тариф. Вам останется только указать контактные данные.`, "bot");
+            const t = botData[currentLang];
+            let cleanFormat = formatName.replace(/\s*\([^)]*\)/, '');
+            const msg = t.confirm.replace('{format}', cleanFormat).replace('{island}', islandName);
+            
+            addMsg(msg, "bot");
             
             renderOptions([
-                { text: "Отлично, к оформлению!", action: () => { 
+                { text: t.btn_go, action: () => { 
                     document.getElementById('f-island').value = islandId;
                     document.getElementById('f-tour').value = formatId;
                     document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
@@ -718,15 +1006,15 @@
 
                     initBot(); 
                 }},
-                { text: "Выбрать другой тур", action: showExcursions }
+                { text: t.btn_other, action: showAllExcursions }
             ]);
         }
 
         function showContacts() {
-            addMsg("Связаться напрямую можно по телефону <b>8 (999) 420-67-67</b> или написать на почту <b>empresseugene@mail.ru</b>", "bot");
+            addMsg(botData[currentLang].contacts, "bot");
             renderOptions([
-                { text: "Посмотреть экскурсии", action: showExcursions },
-                { text: "В начало", action: initBot }
+                { text: botData[currentLang].btn_all, action: showAllExcursions },
+                { text: botData[currentLang].btn_start, action: initBot }
             ]);
         }
     </script>
