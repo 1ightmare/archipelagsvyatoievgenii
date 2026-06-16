@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Архипелаг Императрицы Евгении</title>
-    
     <link rel="preload" as="image" href="islandbanner.jpg">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --text-dark: #1e3a8a;
@@ -153,6 +150,9 @@
         }
         .mobile-menu.active { opacity: 1; pointer-events: all; }
         .mobile-link { font-size: 1.5rem; font-weight: 600; color: var(--text-dark); }
+        .mobile-lang { display: flex; gap: 20px; margin-top: 20px; }
+        .mobile-lang a { font-size: 1.2rem; font-weight: 600; color: var(--text-main); transition: 0.3s; }
+        .mobile-lang a.active, .mobile-lang a:hover { color: var(--accent); }
         .hero { position: relative; display: flex; min-height: 100vh; overflow: hidden; }
         .hero-content {
             position: relative; 
@@ -347,7 +347,9 @@
         }
         .fade-on-scroll { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .fade-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        
         @media (max-width: 960px) {
+            .navbar-wrapper { position: absolute; }
             .navbar { justify-content: center; padding: 10px 20px; }
             .nav-links-left, .nav-links-right { display: none; } 
             .nav-logo { margin: 0; flex: none; }
@@ -363,9 +365,13 @@
             .form-container { padding: 40px 20px; }
             .chat-layout { flex-direction: column; padding: 0 20px; }
             .chat-text h2 { text-align: center; }
+            .floating-lang-btn { display: none; }
             .floating-chat-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
-            .floating-lang-btn { top: 20px; right: 20px; width: 50px; height: 50px; font-size: 14px; }
-            .contact-large { font-size: 1.1rem; flex-direction: column; gap: 5px; }
+            .contact-large { font-size: 1.2rem; flex-direction: row; gap: 10px; justify-content: center; flex-wrap: wrap; text-align: center; }
+            .chat-container { height: 600px; min-width: 100%; border-radius: 15px; }
+            .msg { font-size: 1.05rem; padding: 14px 18px; max-width: 92%; }
+            .chat-options { flex-direction: column; }
+            .chat-btn { width: 100%; font-size: 1.05rem; padding: 14px 20px; margin-bottom: 5px; }
         }
     </style>
 </head>
@@ -536,7 +542,7 @@
             <div class="chat-layout">
                 <div class="chat-text">
                     <h2 data-i18n="bot_title">Подобрать<br>экскурсию</h2>
-                    <p data-i18n="bot_desc">Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он расскажет о маршрутах, поможет определиться с форматом путешествия и автоматически заполнит форму бронирования для вас.</p>
+                    <p data-i18n="bot_desc">Сомневаетесь в выборе? Воспользуйтесь нашим интерактивным помощником. Он задаст пару вопросов и автоматически подберет идеальный тур под ваши пожелания.</p>
                 </div>
                 <div class="chat-container glass-card">
                     <div class="chat-header"><span data-i18n="bot_header">Гид-ассистент онлайн</span> <span class="online-dot">🟢</span></div>
